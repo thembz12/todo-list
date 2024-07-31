@@ -6,7 +6,7 @@ const router = require("express").Router()
 router.post("/signup", signUp)
 router.get("/allusers", authenticate ,allUsers)
 router.post("/loginuser", loginUser)
-router.post("/getoneuser", getOneUsers)
+router.get("/getoneuser", getOneUsers)
 
 router.put("/make-admin/:id" ,makeAdmin)
 router.post("/verify", verifyEmail)
