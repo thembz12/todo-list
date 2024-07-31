@@ -109,8 +109,8 @@ exports.loginUser = async (req,res)=>{
 
 exports.makeAdmin = async (req,res)=>{
     try {
-        const userId = req.params.id
-        const user = await userModel.findById(userId)
+        const userID = req.params.userID
+        const user = await userModel.findById(userID)
         if(!user){
             return res.status(404).json({message:"user not found"})
         }
@@ -127,19 +127,19 @@ exports.makeAdmin = async (req,res)=>{
 
 exports.deleteUser = async (req,res)=>{
     try {
-        const userId = req.params.id
-        const user = await userModel.findById(userId)
+        const userID = req.params.userID
+        const user = await userModel.findById(userID)
         if(!user){
             return res.status(404).json({message:"user not found"})
         }
 
-        const deletedUser = await userModel.findByIdAndDelete(userId)
+        const deletedUser = await userModel.findByIdAndDelete(userID)
         res.status(200).json({
             message:"user deleted successfully"
         })
         
     } catch (error) {
-        res.status(500).json(error.message)
+        res.status(500).json(error.message) 
         
     }
 }

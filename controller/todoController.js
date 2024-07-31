@@ -36,7 +36,7 @@ exports.createContent = async (req,res)=>{
 
 exports.getOneContent = async (req,res)=>{
     try {
-        const {userID} = req.user
+        const userID = req.params.userID
         const getOneContent = await todoModel.findOne({userID})
         if(!getOneContent){
             return res.status(404).json({
@@ -59,14 +59,14 @@ exports.getAllContent = async (req,res)=>{
     try {
         const {userID} = req.user
         const getAllContent = await todoModel.find({user:userID})
-        if(!getAllContent){
+        if(!getAllContent.length <=0){
             return res.status(404).json({
                 message:"content not found"
             })
         }
         res.status(200).json({
             message:"content below",
-            data:getAllContent
+            data:getAllContent.length
         })
     } catch (error) {
         res.status(500).json({
