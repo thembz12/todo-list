@@ -1,7 +1,9 @@
+const cors = require ("cors")
+const morgan = require ("morgan")
 const express = require ("express")
 require("dotenv").config()
 require("./config/dbConfig")
-const cors = require ("cors")
+
 const router = require("./router/router")
 const todoRouter = require ("./router/todoRouter")
 const port = process.env.port || 1234
