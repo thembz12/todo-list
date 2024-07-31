@@ -1,11 +1,12 @@
 
-const { signUp, makeAdmin, loginUser, allUsers, verifyEmail, resendVerification, resetPassword, forgotPassword, changePassword } = require("../controller/controller")
+const { signUp, makeAdmin, loginUser, allUsers, verifyEmail, resendVerification, resetPassword, forgotPassword, changePassword, getOneUsers } = require("../controller/controller")
 const { authenticate } = require("../middleware/auth")
 const router = require("express").Router()
 
 router.post("/signup", signUp)
 router.get("/allusers", authenticate ,allUsers)
 router.post("/loginuser", loginUser)
+router.post("/getoneuser", getOneUsers)
 
 router.put("/make-admin/:id" ,makeAdmin)
 router.post("/verify", verifyEmail)

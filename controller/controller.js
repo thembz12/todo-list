@@ -56,7 +56,7 @@ exports.allUsers = async (req,res)=>{
     }
 }
 
-exports.allUsers = async (req,res)=>{
+exports.getOneUsers = async (req,res)=>{
     try {
         const id = req.params.id
         const user = await userModel.findOne({id})
