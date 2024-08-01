@@ -1,40 +1,68 @@
-const userModel = require ("../model/userModel.js")
-const jwt = require ("jsonwebtoken")
-require("dotenv").config()
+const jwt = require('jsonwebtoken');
+const userModel = require('../models/model');
+ 
 
-exports.authenticator = async (req,res)=>{
+// To authenticate if a user is signed in
+
+const auth2 = async (req, res, next) => {
     try {
-        const auth = req.headers.authorization
-        if(!auth){
-            return res.status(401).json({message:"authorization required"})
-        }
-        const token = auth.split(" ")[1]
-        if(!token){
-            return res.status(401).json({message:"invalid token"})
-        }
+        const hasAuthorization = req.headers.authorization;
 
-        const decodedToken = jwt.verify(token, process.JWT_SECRET)
-        const user  = await userModel.findById(decodedToken.userId)
-        if(!user){
-            res.status(401).json({message:"authentication failed : user not found"})
-        }
-
-        if(user.blackList.includes(token)){
+        if (!hasAuthorization) {
             return res.status(401).json({
-                message: 'Session expired: Please login to continue'
-            })
+                message: 'Action requires sign-in. Please log in to continue.'
+            });
         }
 
-        // if(user!=facilitator){
-        //     return res.status(403).json({message:"authentication failed: user not an admin"})
-        // }
-        req.user = decodedToken
-        next()
+        const token = hasAuthorization.split(' ')[1];
+
+        if (!token) {
+            return res.status(401).json({
+                message: 'Action requires sign-in. Please log in to continue.'
+            });
+        }
+
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
+        const user = await userModel.findById(decodedToken.userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: 'Authentication Failed: User not found'
+            });
+        }
+
+        req.user = decodedToken;
+
+        next();
 
     } catch (error) {
-        if(error instanceof jwt.JsonWebTokenError)
-            return res.status(401).json({message: "error verifying user"})
-        res.status(500).json(error.message)
-        
+        if (error instanceof jwt.JsonWebTokenError) {
+            return res.status(401).json({
+                message: "Oops! Access denied. Please sign in."
+            });
+        }
+        res.status(500).json({
+            message: error.message
+        });
     }
-}
+};
+
+const isAdmin2 = async (req, res, next) => {
+    try {
+      if (req.user.isAdmin) {
+        next();
+      } else {
+        res.status(403).json({ message: "Unauthorized: Not an admin" });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  };
+  
+  module.exports = {
+    auth2,
+    isAdmin2,
+  };

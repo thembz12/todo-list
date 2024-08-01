@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken")
 const userModel = require ("../models/model.js")
 const bcrypt = require ("bcrypt")
-const sendMail = require ("../helpers/email.js")
+//const sendMail = require ("../helpers/email.js")
 const html = require ("../helpers/html.js")
 
 
@@ -16,17 +16,17 @@ exports.signUp = async (req,res)=>{
             const hashedpassword = await bcrypt.hash(password, saltedpassword)
             const user = new userModel({fullname, email, password:hashedpassword})
         
-        const userToken = jwt.sign({id:user.email},process.env.JWT_SECRET,{expiresIn:"20minutes"})
-        const verifyLink = `${req.protocol}://${req.get("host")}/router/verify${user._id}/${userToken}`
+    //     const userToken = jwt.sign({id:user.email},process.env.JWT_SECRET,{expiresIn:"20minutes"})
+    //     const verifyLink = `${req.protocol}://${req.get("host")}/router/verify${user._id}/${userToken}`
 
-       let mailOptions ={
-        email:user.email,
-        subject:"verification email",
-        html: html.signUpTemplate(verifyLink,user.fullname),
-       }
+    //    let mailOptions ={
+    //     email:user.email,
+    //     subject:"verification email",
+    //     html: html.signUpTemplate(verifyLink,user.fullname),
+    //    }
 
            await user.save()
-           await sendMail(mailOptions)
+           //await sendMail(mailOptions)
             res.status(201).json({message:"successful", data:user}) 
 
         }
