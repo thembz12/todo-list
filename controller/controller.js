@@ -8,6 +8,11 @@ const html = require ("../helpers/html.js")
 exports.signUp = async (req,res)=>{
     try{
         const {fullname, email, password}=req.body
+        if(!fullname || !email || !password){
+            res.status(400).json({
+                message:"fill the field before you can continue"
+            })
+        }
         const userExist = await userModel.findOne({email})
         if(userExist){
             res.status(400).json({message:"user already exist"})
@@ -17,12 +22,13 @@ exports.signUp = async (req,res)=>{
             const user = new userModel({fullname, email, password:hashedpassword})
         
         const userToken = jwt.sign({id:user.email},process.env.JWT_SECRET,{expiresIn:"20minutes"})
-        const verifyLink = `${req.protocol}://${req.get("host")}/api/v1/verify${user._id}/${userToken}`
+        
+        user.token = userToken
 
        let mailOptions ={
         email:user.email,
         subject:"verification email",
-        html: html.signUpTemplate(verifyLink,user.fullname),
+        html: `please click on he link to verify your email:<a href="https://todo-list-5cck.onrender.com/api/v1/verify-email/${userToken}">verify Email</a>,`
        }
 
            await user.save()

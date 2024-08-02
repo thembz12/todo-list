@@ -15,5 +15,5 @@ router.post("/resendVerification/", resendVerification)
 router.get("/forgotpassword", forgotPassword )
 router.post("/changepassword:token", changePassword)
 router.get("/reset-password:token", resetPassword)
-module.exports = router
+module.exports = router 
  

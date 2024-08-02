@@ -8,6 +8,7 @@ const router = require("./router/router")
 const todoRouter = require ("./router/todoRouter")
 const port = process.env.port || 1234
 const app = express()
+app.use(morgan("dev"))
 app.use(cors("*"))
 app.use(express.json())
 app.use("/api/v1/",router)
