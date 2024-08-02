@@ -21,7 +21,9 @@ exports.signUp = async (req,res)=>{
             const hashedpassword = await bcrypt.hash(password, saltedpassword)
             const user = new userModel({fullname, email, password:hashedpassword})
         
-        const userToken = jwt.sign({id:user.email},process.env.JWT_SECRET,{expiresIn:"20minutes"})
+        const userToken = jwt.sign({userId:user._id,
+            email:user.email
+        },process.env.JWT_SECRET,{expiresIn:"20minutes"})
         
         user.token = userToken
 
