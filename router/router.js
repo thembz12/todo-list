@@ -10,7 +10,7 @@ router.get("/getone/:userID", getOneUsers)
 router.delete("/deleteuser/:userID",auth2,isAdmin2, deleteUser)
 
 router.put("/make-admin/:userID" ,makeAdmin)
-router.post("/verify", verifyEmail)
+router.get("/verify", verifyEmail)
 router.post("/resendVerification/", resendVerification)
 router.get("/forgotpassword", forgotPassword )
 router.post("/changepassword:token", changePassword)
