@@ -5,7 +5,7 @@ const router = require("express").Router()
 
 router.post("/signup", signUp)
 router.get("/allusers",auth2,isAdmin2,allUsers)
-router.post("/login", loginUser)
+router.post("/login",auth2, loginUser)
 router.get("/getone/:userID", getOneUsers)
 router.delete("/deleteuser/:userID",auth2,isAdmin2, deleteUser)
 
