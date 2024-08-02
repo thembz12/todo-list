@@ -3,7 +3,6 @@ const userModel = require ("../models/model.js")
 const bcrypt = require ("bcrypt")
 const sendMail = require ("../helpers/email.js")
 const html = require ("../helpers/html.js")
-const { isAdmin2 } = require("../middleware/auth2.js")
 
 
 exports.signUp = async (req,res)=>{
@@ -18,7 +17,7 @@ exports.signUp = async (req,res)=>{
             const user = new userModel({fullname, email, password:hashedpassword})
         
         const userToken = jwt.sign({id:user.email},process.env.JWT_SECRET,{expiresIn:"20minutes"})
-        const verifyLink = `${req.protocol}://${req.get("host")}/router/verify${user._id}/${userToken}`
+        const verifyLink = `${req.protocol}://${req.get("host")}/api/v1/verify${user._id}/${userToken}`
 
        let mailOptions ={
         email:user.email,
@@ -99,7 +98,7 @@ exports.loginUser = async (req,res)=>{
         const token = await jwt.sign({
             userId: userExist._id,
             email: userExist.email,
-            isAdmin2:userExist.isAdmin2
+            isAdmin: userExist.isAdmin
         }, process.env.JWT_SECRET,{expiresIn:"1h"})
         res.status(200).json({message:"login successful",data:userExist, token})
         
