@@ -1,11 +1,12 @@
 
 const { signUp, makeAdmin, loginUser, allUsers, verifyEmail, resendVerification, resetPassword, forgotPassword, changePassword, getOneUsers, deleteUser } = require("../controller/controller")
+const { authenticate } = require("../middleware/auth")
 const { auth2, isAdmin, isAdmin2 }= require ("../middleware/auth2")
 const router = require("express").Router()
 
 router.post("/signup", signUp)
 router.get("/allusers",auth2,isAdmin2,allUsers)
-router.post("/login",auth2, loginUser)
+router.post("/login",authenticate, loginUser)
 router.get("/getone/:userID", getOneUsers)
 router.delete("/deleteuser/:userID",auth2,isAdmin2, deleteUser)
 

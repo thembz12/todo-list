@@ -27,14 +27,16 @@ exports.signUp = async (req,res)=>{
         
         user.token = userToken
 
-       let mailOptions ={
-        email:user.email,
-        subject:"verification email",
-        html: `please click on he link to verify your email:<a href="https://todo-list-5cck.onrender.com/api/v1/verify-email/${userToken}">verify Email</a>,`
-       }
+    //    let mailOptions ={
+    //     email:userExist.email,
+    //     subject:"verification email",
+    //     html: `please click on he link to verify your email:
+    //     <a href="https://todo-list-5cck.onrender.com/api/v1/verify-email/${userToken}">
+    //     Verify Email</a>,`
+    //    }
 
            await user.save()
-           await sendMail(mailOptions)
+           //await sendMail(mailOptions)
             res.status(201).json({message:"successful", data:user}) 
 
         }
